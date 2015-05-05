@@ -1,0 +1,27 @@
+{
+"resources":
+	[
+	  {"name":"bgImage","type":"image","url":"assets/bg.jpg"},
+	  {"name":"egretIcon","type":"image","url":"assets/egret_icon.png"},
+      {"name":"description","type":"json","url":"config/description.json"},
+      {"name":"gameBg","type":"image","url":"assets/game_bg.png"},
+      {"name":"collect","type":"image","url":"assets/icon_60.png"},
+      {"name":"map","type":"image","url":"assets/icon_67.png"},
+      {"name":"fight","type":"image","url":"assets/icon_61.png"},
+      {"name":"help","type":"image","url":"assets/icon_68.png"},
+      {"name":"myhoney","type":"image","url":"assets/icon_65.png"},
+      {"name":"plus","type":"image","url":"assets/icon_102.png"},
+      {"name":"mysoldier","type":"image","url":"assets/icon_66.png"},
+      {"name":"mybottle","type":"image","url":"assets/icon_62.png"},
+      {"name":"cloud1","type":"image","url":"assets/icon_97.png"},
+      {"name":"cloud2","type":"image","url":"assets/icon_100.png"}
+
+
+    ],
+
+"groups":
+	[
+        {"name":"preload","keys":"gameBg,collect,map,fight,help,myhoney,plus,mysoldier,mybottle,cloud1,cloud2"},
+        {"name":"game","keys":"gameBg"}
+	]
+}
