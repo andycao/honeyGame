@@ -14,14 +14,15 @@
       {"name":"mysoldier","type":"image","url":"assets/icon_66.png"},
       {"name":"mybottle","type":"image","url":"assets/icon_62.png"},
       {"name":"cloud1","type":"image","url":"assets/icon_97.png"},
-      {"name":"cloud2","type":"image","url":"assets/icon_100.png"}
-
-
+      {"name":"cloud2","type":"image","url":"assets/icon_100.png"},
+      {"name":"honeyimg","type":"image","url":"assets/icon_76.png"},
+      {"name":"honeyclose","type":"image","url":"assets/icon_77.png"},
+      {"name":"buy","type":"image","url":"assets/icon_78.png"}
     ],
 
 "groups":
 	[
-        {"name":"preload","keys":"gameBg,collect,map,fight,help,myhoney,plus,mysoldier,mybottle,cloud1,cloud2"},
+        {"name":"preload","keys":"gameBg,collect,map,fight,help,myhoney,plus,mysoldier,mybottle,cloud1,cloud2,honeyimg,honeyclose,buy"},
         {"name":"game","keys":"gameBg"}
 	]
 }

@@ -1,4 +1,6 @@
 [
+	"beegame\\HoneybeePanel.ts",
 	"LoadingUI.ts",
+	"beegame\\GameContainer.ts",
 	"Main.ts"
 ]
