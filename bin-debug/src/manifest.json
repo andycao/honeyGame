@@ -1,5 +1,7 @@
 [
+	"beegame\\Bottle.ts",
 	"beegame\\HoneybeePanel.ts",
+	"beegame\\Rules.ts",
 	"LoadingUI.ts",
 	"beegame\\GameContainer.ts",
 	"Main.ts"

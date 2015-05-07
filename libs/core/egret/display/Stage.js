@@ -100,7 +100,8 @@ var egret;
             this.setResolutionPolicy();
             //触发Event.RESIZE事件
             this.dispatchEventWith(egret.Event.RESIZE);
-        };
+
+				};
         /**
          * 设置屏幕适配策略
          */
@@ -114,7 +115,11 @@ var egret;
             egret.StageDelegate.getInstance()._setResolutionPolicy(policy);
             this._stageWidth = egret.StageDelegate.getInstance()._stageWidth;
             this._stageHeight = egret.StageDelegate.getInstance()._stageHeight;
-        };
+
+					//此處修改gameDiv的top屬性 使得showall模式顯示遊戲在最上測，有利於流佈局
+					document.getElementById('gameDiv').style.top = 0;
+
+				};
         Object.defineProperty(__egretProto__, "stageWidth", {
             /**
              * 舞台宽度（坐标系宽度，非设备宽度）

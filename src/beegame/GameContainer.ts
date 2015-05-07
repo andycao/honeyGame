@@ -8,6 +8,13 @@ module beegame{
 
         private honeyPanel : beegame.HoneybeePanel;
 
+        private bottlePanel : beegame.Bottle;
+
+        private rulesPanel : beegame.Rules;
+
+        private flower : egret.Bitmap;
+
+        private labelbee : egret.TextField;
 
         public constructor(){
             super();
@@ -47,20 +54,58 @@ module beegame{
             cloud2.scaleY = 0.9;
 
             //向日葵
+            var containerF = new egret.DisplayObjectContainer();
+            containerF.name = "myhoney";
+            containerF.x = stageW / 2;
+            containerF.y = stageW / 2;
+
+            this.flower = this.createBitmapByName("flower");
+            this.flower.anchorX = this.flower.anchorY = 0.5;
+            this.flower.x = 0;
+            this.flower.y = 0;
+            this.flower.scaleX = 0.3;
+            this.flower.scaleY = 0.3;
+            containerF.addChild(this.flower);
+
             var icon: egret.Bitmap = this.createBitmapByName("collect");
             icon.anchorX = icon.anchorY = 0.5;
-            this.addChild(icon);
-            icon.x = stageW / 2;
-            icon.y = stageH / 2;
+            icon.x = 0;
+            icon.y = 0;
             icon.scaleX = 0.9;
             icon.scaleY = 0.9;
+            icon.touchEnabled = true;
+            containerF.addChild(icon);
+            icon.addEventListener(egret.TouchEvent.TOUCH_TAP, this.collectBee, this);
+
+            var bees : egret.Bitmap = this.createBitmapByName("bees");
+            bees.anchorX = bees.anchorY = 0.5;
+            bees.x = -15;
+            bees.y = 43;
+            bees.scaleX = 0.6;
+            bees.scaleY = 0.6;
+            containerF.addChild(bees);
+
+            this.labelbee = new egret.TextField();
+            this.labelbee.x = 14;
+            this.labelbee.y = 43;
+            this.labelbee.anchorX = this.labelbee.anchorY = 0.5;
+            this.labelbee.width = 80;
+            this.labelbee.height = 40;
+            this.labelbee.textAlign = egret.HorizontalAlign.CENTER;
+            this.labelbee.verticalAlign = egret.VerticalAlign.MIDDLE;
+            this.labelbee.textColor = 0xffffff;
+            this.labelbee.text = "4";
+            this.labelbee.size = 20;
+            containerF.addChild(this.labelbee);
+
+            this.addChild(containerF);
 
             //地图图标
             var map: egret.Bitmap = this.createBitmapByName("map");
             map.anchorX = map.anchorY = 0.5;
             this.addChild(map);
-            map.x = map.width/2 + 5;
-            map.y = stageH - map.height / 2 - 5;
+            map.x = map.width/2 + 25;
+            map.y = stageH - map.height / 2 - 25;
             map.scaleX = 0.8;
             map.scaleY = 0.8;
             map.addEventListener(egret.TouchEvent.TOUCH_TAP,this.tapMap,this);
@@ -79,10 +124,12 @@ module beegame{
             var help: egret.Bitmap = this.createBitmapByName("help");
             help.anchorX = help.anchorY = 0.5;
             this.addChild(help);
-            help.x = stageW - help.width / 2 - 100;
+            help.x = stageW - help.width / 2 - 80;
             help.y = help.height / 2 + 100;
             help.scaleX = 1;
             help.scaleY = 1;
+            help.touchEnabled = true;
+            help.addEventListener(egret.TouchEvent.TOUCH_TAP, this.tapRules, this);
 
             //工蜂 组合
             var container1 = new egret.DisplayObjectContainer();
@@ -179,8 +226,8 @@ module beegame{
             mybottle.touchEnabled = true;
             container3.addChild(mybottle);
 
-            //加号图标
-            var plus3: egret.Bitmap = this.createBitmapByName("plus");
+            //右侧图标
+            var plus3: egret.Bitmap = this.createBitmapByName("upgrade");
             plus3.anchorX = 0.5;
             plus3.anchorY = 0;
             plus3.x = label3.width + 40;
@@ -197,6 +244,14 @@ module beegame{
             this.honeyPanel.addEventListener("close", this.closePanel, this);
             this.honeyPanel.addEventListener("buy", this.buybee, this);
 
+            //bottlePanel
+            this.bottlePanel = new beegame.Bottle();
+            this.bottlePanel.addEventListener("close", this.closePanel, this);
+            this.bottlePanel.addEventListener("buy", this.buybee, this);
+
+            //rulesPanel
+            this.rulesPanel = new beegame.Rules();
+            this.rulesPanel.addEventListener("close", this.closePanel, this);
 
             container1.addEventListener(egret.TouchEvent.TOUCH_TAP,this.labelTap,this);
             container3.addEventListener(egret.TouchEvent.TOUCH_TAP,this.labelTap,this);
@@ -228,7 +283,16 @@ module beegame{
                 tw.call(change, this);
 
             };
+
+            var tw = egret.Tween.get(this.flower);
+            var change2 = function(){
+
+                //向日葵的动作
+                tw.to({scaleX : 0.7, scaleY : 0.7}, 3000).to({rotation:360}, 1000);
+                //tw.call(change2, this);
+            };
             change();
+            change2();
         }
 
 
@@ -243,14 +307,17 @@ module beegame{
 
             if(event.currentTarget.name === 'myhoney'){
                 if(this.honeyPanel)
-                this.addChild(this.honeyPanel)
+                    this.addChild(this.honeyPanel);
                 else
-                console.log('null');
+                    console.log('null');
 
             } else if(event.currentTarget.name === 'mysoldier'){
                 alert('兵蜂按钮');
             } else if(event.currentTarget.name === 'mybottle'){
-                alert('蜜罐');
+                if(this.bottlePanel)
+                    this.addChild(this.bottlePanel);
+                else
+                    console.log('null');
             }
         }
 
@@ -259,14 +326,41 @@ module beegame{
             alert('地图被点击了,显示地图');
         }
 
-        private closePanel():void{
-            this.removeChild(this.honeyPanel);
+        private tapRules(event : egret.TouchEvent):void{
+            console.log('点击规则');
+            if(this.rulesPanel)
+                this.addChild(this.rulesPanel);
+            else
+                console.log('null');
+        }
 
+        private closePanel():void{
+            //关闭所有panel
+            if(this.honeyPanel.parent)
+                this.removeChild(this.honeyPanel);
+
+            if(this.bottlePanel.parent)
+                this.removeChild(this.bottlePanel);
+
+            if(this.rulesPanel.parent)
+                this.removeChild(this.rulesPanel);
         }
 
         private buybee():void{
             alert('购买功能正在开发中');
             this.closePanel();
+        }
+
+        private collectBee(event : egret.TouchEvent):void{
+            console.log('aha');
+
+            this.labelbee.text = (parseInt(this.labelbee.text) + 1).toString();
+            //转动
+            var tw = egret.Tween.get(this.flower);
+            this.flower.rotation = 0;
+            //向日葵的动作
+            tw.to({rotation:360}, 1000);
+
         }
 
 

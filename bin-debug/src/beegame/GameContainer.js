@@ -38,19 +38,52 @@ var beegame;
             cloud2.scaleX = 0.9;
             cloud2.scaleY = 0.9;
             //向日葵
+            var containerF = new egret.DisplayObjectContainer();
+            containerF.name = "myhoney";
+            containerF.x = stageW / 2;
+            containerF.y = stageW / 2;
+            this.flower = this.createBitmapByName("flower");
+            this.flower.anchorX = this.flower.anchorY = 0.5;
+            this.flower.x = 0;
+            this.flower.y = 0;
+            this.flower.scaleX = 0.3;
+            this.flower.scaleY = 0.3;
+            containerF.addChild(this.flower);
             var icon = this.createBitmapByName("collect");
             icon.anchorX = icon.anchorY = 0.5;
-            this.addChild(icon);
-            icon.x = stageW / 2;
-            icon.y = stageH / 2;
+            icon.x = 0;
+            icon.y = 0;
             icon.scaleX = 0.9;
             icon.scaleY = 0.9;
+            icon.touchEnabled = true;
+            containerF.addChild(icon);
+            icon.addEventListener(egret.TouchEvent.TOUCH_TAP, this.collectBee, this);
+            var bees = this.createBitmapByName("bees");
+            bees.anchorX = bees.anchorY = 0.5;
+            bees.x = -15;
+            bees.y = 43;
+            bees.scaleX = 0.6;
+            bees.scaleY = 0.6;
+            containerF.addChild(bees);
+            this.labelbee = new egret.TextField();
+            this.labelbee.x = 14;
+            this.labelbee.y = 43;
+            this.labelbee.anchorX = this.labelbee.anchorY = 0.5;
+            this.labelbee.width = 80;
+            this.labelbee.height = 40;
+            this.labelbee.textAlign = egret.HorizontalAlign.CENTER;
+            this.labelbee.verticalAlign = egret.VerticalAlign.MIDDLE;
+            this.labelbee.textColor = 0xffffff;
+            this.labelbee.text = "4";
+            this.labelbee.size = 20;
+            containerF.addChild(this.labelbee);
+            this.addChild(containerF);
             //地图图标
             var map = this.createBitmapByName("map");
             map.anchorX = map.anchorY = 0.5;
             this.addChild(map);
-            map.x = map.width / 2 + 5;
-            map.y = stageH - map.height / 2 - 5;
+            map.x = map.width / 2 + 25;
+            map.y = stageH - map.height / 2 - 25;
             map.scaleX = 0.8;
             map.scaleY = 0.8;
             map.addEventListener(egret.TouchEvent.TOUCH_TAP, this.tapMap, this);
@@ -67,10 +100,12 @@ var beegame;
             var help = this.createBitmapByName("help");
             help.anchorX = help.anchorY = 0.5;
             this.addChild(help);
-            help.x = stageW - help.width / 2 - 100;
+            help.x = stageW - help.width / 2 - 80;
             help.y = help.height / 2 + 100;
             help.scaleX = 1;
             help.scaleY = 1;
+            help.touchEnabled = true;
+            help.addEventListener(egret.TouchEvent.TOUCH_TAP, this.tapRules, this);
             //工蜂 组合
             var container1 = new egret.DisplayObjectContainer();
             container1.touchChildren = true; //等同于Flash的mouseChildren
@@ -152,8 +187,8 @@ var beegame;
             mybottle.scaleY = 0.7;
             mybottle.touchEnabled = true;
             container3.addChild(mybottle);
-            //加号图标
-            var plus3 = this.createBitmapByName("plus");
+            //右侧图标
+            var plus3 = this.createBitmapByName("upgrade");
             plus3.anchorX = 0.5;
             plus3.anchorY = 0;
             plus3.x = label3.width + 40;
@@ -167,6 +202,13 @@ var beegame;
             this.honeyPanel = new beegame.HoneybeePanel();
             this.honeyPanel.addEventListener("close", this.closePanel, this);
             this.honeyPanel.addEventListener("buy", this.buybee, this);
+            //bottlePanel
+            this.bottlePanel = new beegame.Bottle();
+            this.bottlePanel.addEventListener("close", this.closePanel, this);
+            this.bottlePanel.addEventListener("buy", this.buybee, this);
+            //rulesPanel
+            this.rulesPanel = new beegame.Rules();
+            this.rulesPanel.addEventListener("close", this.closePanel, this);
             container1.addEventListener(egret.TouchEvent.TOUCH_TAP, this.labelTap, this);
             container3.addEventListener(egret.TouchEvent.TOUCH_TAP, this.labelTap, this);
             //动画效果
@@ -190,7 +232,14 @@ var beegame;
                 tw2.to({ x: cloud2.x - 80 }, 20000).to({ x: cloud2.x }, 20000);
                 tw.call(change, this);
             };
+            var tw = egret.Tween.get(this.flower);
+            var change2 = function () {
+                //向日葵的动作
+                tw.to({ scaleX: 0.7, scaleY: 0.7 }, 2200).to({ rotation: 360 }, 1000);
+                //tw.call(change2, this);
+            };
             change();
+            change2();
         };
         /*点击标签*/
         __egretProto__.labelTap = function (event) {
@@ -209,19 +258,44 @@ var beegame;
                 alert('兵蜂按钮');
             }
             else if (event.currentTarget.name === 'mybottle') {
-                alert('蜜罐');
+                if (this.bottlePanel)
+                    this.addChild(this.bottlePanel);
+                else
+                    console.log('null');
             }
         };
         __egretProto__.tapMap = function (event) {
             console.log('touched map');
             alert('地图被点击了,显示地图');
         };
+        __egretProto__.tapRules = function (event) {
+            console.log('点击规则');
+            if (this.rulesPanel)
+                this.addChild(this.rulesPanel);
+            else
+                console.log('null');
+        };
         __egretProto__.closePanel = function () {
-            this.removeChild(this.honeyPanel);
+            //关闭所有panel
+            if (this.honeyPanel.parent)
+                this.removeChild(this.honeyPanel);
+            if (this.bottlePanel.parent)
+                this.removeChild(this.bottlePanel);
+            if (this.rulesPanel.parent)
+                this.removeChild(this.rulesPanel);
         };
         __egretProto__.buybee = function () {
             alert('购买功能正在开发中');
             this.closePanel();
+        };
+        __egretProto__.collectBee = function (event) {
+            console.log('aha');
+            this.labelbee.text = (parseInt(this.labelbee.text) + 1).toString();
+            //转动
+            var tw = egret.Tween.get(this.flower);
+            this.flower.rotation = 0;
+            //向日葵的动作
+            tw.to({ rotation: 360 }, 1000);
         };
         __egretProto__.addSoldier = function () {
             //兵蜂 组合
