@@ -25,6 +25,65 @@ module beegame{
         private onAddToStage(event:egret.Event){
             this.removeEventListener(egret.Event.ADDED_TO_STAGE,this.onAddToStage,this);
             this.createGameScene();
+
+            //api调用
+            //this.labelbee.text = "12";
+
+        }
+
+        public jqueryAjax():void{
+            console.log('invoked');
+            var useCfApi = function (objPrm, successCallback, errorCallback, completeCallback) {
+                $.ajax({
+                    type: 'get',
+                    url: 'http://cusflo.com/api/api_c02_n.php',
+                    data: objPrm,
+                    dataType: 'jsonp',
+                    jsonp: "callback",
+                    timeout: 3000, // sets timeout to 3 seconds
+                    success: function (json) {
+                        /* no session用户超时 */
+                        if (!json.status && json.data === 'NOSESSION') {
+                            window.location.href = "http://wi-beacon.net:81/jump.cgi";
+                        } else {
+                            successCallback(json);
+                        }
+                    },
+                    error: function (json) {
+                        if (errorCallback) {
+                            errorCallback(json);
+                        }
+
+                    },
+                    complete: function (json) {
+                        if (completeCallback) {
+                            completeCallback(json);
+                        }
+                    }
+                });
+            };
+
+            useCfApi({api:1015},function(){
+                alert('aha');
+            } ,test,test);
+            function test(){
+                alert('lalala');
+            }
+        }
+
+        public setMyInfo():void{
+            var urlreq:egret.URLRequest = new egret.URLRequest( "http://cusflo.com/api/api_c02_n.php" );
+            urlreq.data = new egret.URLVariables("api=1015");
+            urlreq.method = egret.URLRequestMethod.GET;
+
+            var urlloader:egret.URLLoader = new egret.URLLoader;
+
+            urlloader.dataFormat = egret.URLLoaderDataFormat.TEXT;
+
+            urlloader.addEventListener( egret.Event.COMPLETE, function( evt:egret.Event ):void{
+                console.log(urlloader.data);
+            }, this );
+            urlloader.load( urlreq );
         }
 
         public createGameScene():void{
@@ -146,7 +205,6 @@ module beegame{
             shape1.touchEnabled = true;
             container1.addChild(shape1);
 
-
             var label1: egret.TextField = new egret.TextField();
             label1.x = 40;
             label1.y = 20;
@@ -181,11 +239,7 @@ module beegame{
             plus1.scaleY = 1.3;
             plus1.touchEnabled = true;
             container1.addChild(plus1);
-
             this.addChild(container1);
-
-
-
 
             //蜜罐 组合
             var container3 = new egret.DisplayObjectContainer();
@@ -295,7 +349,6 @@ module beegame{
             change2();
         }
 
-
         /*点击标签*/
         private labelTap(event:egret.TouchEvent):void{
             var msg:string = event.type;
@@ -304,7 +357,7 @@ module beegame{
             msg += "\n"+event.currentTarget.name+","+event.target.name;
             console.log(msg);
 
-
+            //工蜂按钮
             if(event.currentTarget.name === 'myhoney'){
                 if(this.honeyPanel)
                     this.addChild(this.honeyPanel);
@@ -323,7 +376,8 @@ module beegame{
 
         private tapMap(event:egret.TouchEvent):void{
             console.log('touched map');
-            alert('地图被点击了,显示地图');
+            //location.href='http://www.baidu.com';
+            this.jqueryAjax();
         }
 
         private tapRules(event : egret.TouchEvent):void{
