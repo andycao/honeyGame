@@ -285,8 +285,7 @@ var beegame;
         };
         __egretProto__.tapMap = function (event) {
             console.log('touched map');
-            //location.href='http://www.baidu.com';
-            this.setMyInfo();
+            location.href = '#map';
         };
         __egretProto__.tapRules = function (event) {
             //rulesPanel

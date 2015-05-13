@@ -345,8 +345,7 @@ module beegame{
 
         private tapMap(event:egret.TouchEvent):void{
             console.log('touched map');
-            //location.href='http://www.baidu.com';
-            this.setMyInfo();
+            location.href='#map';
 
         }
 
