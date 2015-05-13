@@ -12,78 +12,51 @@ module beegame{
 
         private rulesPanel : beegame.Rules;
 
+        private confirm : beegame.Confirm;
+
         private flower : egret.Bitmap;
 
+        //可采蜂蜜
         private labelbee : egret.TextField;
 
+        //工蜂数量
+        private label1 : egret.TextField;
+
+        //蜜罐显示
+        private label3 : egret.TextField;
         public constructor(){
             super();
             this.addEventListener(egret.Event.ADDED_TO_STAGE,this.onAddToStage,this);
-
         }
+
         /**初始化*/
         private onAddToStage(event:egret.Event){
             this.removeEventListener(egret.Event.ADDED_TO_STAGE,this.onAddToStage,this);
             this.createGameScene();
 
             //api调用
-            //this.labelbee.text = "12";
-
+            this.labelbee.text = "12";
+            this.setMyInfo();
         }
 
-        public jqueryAjax():void{
-            console.log('invoked');
-            var useCfApi = function (objPrm, successCallback, errorCallback, completeCallback) {
-                $.ajax({
-                    type: 'get',
-                    url: 'http://cusflo.com/api/api_c02_n.php',
-                    data: objPrm,
-                    dataType: 'jsonp',
-                    jsonp: "callback",
-                    timeout: 3000, // sets timeout to 3 seconds
-                    success: function (json) {
-                        /* no session用户超时 */
-                        if (!json.status && json.data === 'NOSESSION') {
-                            window.location.href = "http://wi-beacon.net:81/jump.cgi";
-                        } else {
-                            successCallback(json);
-                        }
-                    },
-                    error: function (json) {
-                        if (errorCallback) {
-                            errorCallback(json);
-                        }
-
-                    },
-                    complete: function (json) {
-                        if (completeCallback) {
-                            completeCallback(json);
-                        }
-                    }
-                });
-            };
-
-            useCfApi({api:1015},function(){
-                alert('aha');
-            } ,test,test);
-            function test(){
-                alert('lalala');
-            }
-        }
-
+        //设置蜂蜜
         public setMyInfo():void{
-            var urlreq:egret.URLRequest = new egret.URLRequest( "http://cusflo.com/api/api_c02_n.php" );
-            urlreq.data = new egret.URLVariables("api=1015");
-            urlreq.method = egret.URLRequestMethod.GET;
 
-            var urlloader:egret.URLLoader = new egret.URLLoader;
+            var worker = this.label1;
+            var bottle = this.label3;
+            //调用1015 个人信息
+            GameContainer.useApi('api=1015',function(json){
+                var myinfo = json.data[0];
+                worker.text = myinfo.bee_lvl;
+                bottle.text = myinfo.honey + "/" + myinfo.hive_capacity;
+            });
 
-            urlloader.dataFormat = egret.URLLoaderDataFormat.TEXT;
+            var restbee = this.labelbee;
+            //1029 此beacon剩余蜂蜜
+            GameContainer.useApi('api=1029',function(json){
+                restbee.text = json.data;
+            });
 
-            urlloader.addEventListener( egret.Event.COMPLETE, function( evt:egret.Event ):void{
-                console.log(urlloader.data);
-            }, this );
-            urlloader.load( urlreq );
         }
 
         public createGameScene():void{
@@ -205,18 +178,18 @@ module beegame{
             shape1.touchEnabled = true;
             container1.addChild(shape1);
 
-            var label1: egret.TextField = new egret.TextField();
-            label1.x = 40;
-            label1.y = 20;
-            label1.width = 140;
-            label1.height = 40;
-            label1.textAlign = egret.HorizontalAlign.CENTER;
-            label1.verticalAlign = egret.VerticalAlign.MIDDLE;
-            label1.textColor = 0xffffff;
-            label1.text = "23";
-            label1.size = 20;
-            label1.touchEnabled = true;
-            container1.addChild(label1);
+            this.label1 = new egret.TextField();
+            this.label1.x = 40;
+            this.label1.y = 20;
+            this.label1.width = 140;
+            this.label1.height = 40;
+            this.label1.textAlign = egret.HorizontalAlign.CENTER;
+            this.label1.verticalAlign = egret.VerticalAlign.MIDDLE;
+            this.label1.textColor = 0xffffff;
+            this.label1.text = "23";
+            this.label1.size = 20;
+            this.label1.touchEnabled = true;
+            container1.addChild(this.label1);
 
             //我的蜂蜜按钮
             var myhoney: egret.Bitmap = this.createBitmapByName("myhoney");
@@ -233,7 +206,7 @@ module beegame{
             var plus1: egret.Bitmap = this.createBitmapByName("plus");
             plus1.anchorX = 0.5;
             plus1.anchorY = 0;
-            plus1.x = label1.width + 40;
+            plus1.x = this.label1.width + 40;
             plus1.y = 17;
             plus1.scaleX = 1.3;
             plus1.scaleY = 1.3;
@@ -256,18 +229,18 @@ module beegame{
             shape3.touchEnabled = true;
             container3.addChild(shape3);
 
-            var label3: egret.TextField = new egret.TextField();
-            label3.x = 40;
-            label3.y = 20;
-            label3.width = 140;
-            label3.height = 40;
-            label3.textAlign = egret.HorizontalAlign.CENTER;
-            label3.verticalAlign = egret.VerticalAlign.MIDDLE;
-            label3.textColor = 0xffffff;
-            label3.text = "100/100";
-            label3.size = 20;
-            label3.touchEnabled = true;
-            container3.addChild(label3);
+            this.label3 = new egret.TextField();
+            this.label3.x = 40;
+            this.label3.y = 20;
+            this.label3.width = 140;
+            this.label3.height = 40;
+            this.label3.textAlign = egret.HorizontalAlign.CENTER;
+            this.label3.verticalAlign = egret.VerticalAlign.MIDDLE;
+            this.label3.textColor = 0xffffff;
+            this.label3.text = "100/100";
+            this.label3.size = 20;
+            this.label3.touchEnabled = true;
+            container3.addChild(this.label3);
 
             //我的蜂蜜按钮
             var mybottle: egret.Bitmap = this.createBitmapByName("mybottle");
@@ -284,28 +257,13 @@ module beegame{
             var plus3: egret.Bitmap = this.createBitmapByName("upgrade");
             plus3.anchorX = 0.5;
             plus3.anchorY = 0;
-            plus3.x = label3.width + 40;
+            plus3.x = this.label3.width + 40;
             plus3.y = 17;
             plus3.scaleX = 1.3;
             plus3.scaleY = 1.3;
             plus3.touchEnabled = true;
             container3.addChild(plus3);
-
             this.addChild(container3);
-
-            //honeyPanel
-            this.honeyPanel = new beegame.HoneybeePanel();
-            this.honeyPanel.addEventListener("close", this.closePanel, this);
-            this.honeyPanel.addEventListener("buy", this.buybee, this);
-
-            //bottlePanel
-            this.bottlePanel = new beegame.Bottle();
-            this.bottlePanel.addEventListener("close", this.closePanel, this);
-            this.bottlePanel.addEventListener("buy", this.buybee, this);
-
-            //rulesPanel
-            this.rulesPanel = new beegame.Rules();
-            this.rulesPanel.addEventListener("close", this.closePanel, this);
 
             container1.addEventListener(egret.TouchEvent.TOUCH_TAP,this.labelTap,this);
             container3.addEventListener(egret.TouchEvent.TOUCH_TAP,this.labelTap,this);
@@ -359,17 +317,29 @@ module beegame{
 
             //工蜂按钮
             if(event.currentTarget.name === 'myhoney'){
-                if(this.honeyPanel)
+
+                //honeyPanel
+                this.honeyPanel = new beegame.HoneybeePanel();
+                this.honeyPanel.addEventListener("close", this.closePanel, this);
+                this.honeyPanel.addEventListener("buy", this.buybee, this);
+
+                if(this.honeyPanel) {
                     this.addChild(this.honeyPanel);
-                else
+                } else
                     console.log('null');
 
             } else if(event.currentTarget.name === 'mysoldier'){
                 alert('兵蜂按钮');
             } else if(event.currentTarget.name === 'mybottle'){
-                if(this.bottlePanel)
+
+                //bottlePanel
+                this.bottlePanel = new beegame.Bottle();
+                this.bottlePanel.addEventListener("close", this.closePanel, this);
+                this.bottlePanel.addEventListener("buy", this.buyhive, this);
+
+                if(this.bottlePanel) {
                     this.addChild(this.bottlePanel);
-                else
+                } else
                     console.log('null');
             }
         }
@@ -377,32 +347,106 @@ module beegame{
         private tapMap(event:egret.TouchEvent):void{
             console.log('touched map');
             //location.href='http://www.baidu.com';
-            this.jqueryAjax();
+            this.setMyInfo();
+
         }
 
         private tapRules(event : egret.TouchEvent):void{
-            console.log('点击规则');
+
+            //rulesPanel
+            this.rulesPanel = new beegame.Rules();
+            this.rulesPanel.addEventListener("close", this.closePanel, this);
+
             if(this.rulesPanel)
                 this.addChild(this.rulesPanel);
             else
                 console.log('null');
         }
 
+        //关闭所有panel
         private closePanel():void{
-            //关闭所有panel
-            if(this.honeyPanel.parent)
+            if(this.honeyPanel && this.honeyPanel.parent)
                 this.removeChild(this.honeyPanel);
 
-            if(this.bottlePanel.parent)
+            if(this.bottlePanel && this.bottlePanel.parent)
                 this.removeChild(this.bottlePanel);
 
-            if(this.rulesPanel.parent)
+            if(this.rulesPanel && this.rulesPanel.parent)
                 this.removeChild(this.rulesPanel);
+
+            if(this.confirm && this.confirm.parent)
+                this.removeChild(this.confirm);
         }
 
         private buybee():void{
-            alert('购买功能正在开发中');
+
+            var mthis = this;
+
             this.closePanel();
+            this.confirm = new Confirm();
+            this.confirm.addEventListener("close", this.closePanel, this);
+            this.confirm.addEventListener("buy", function(){
+                GameContainer.useApi('api=1019&type=bee',function(json){
+                    console.log(json);
+                    if(json.status === 0){
+                        //购买不成功
+                        mthis.payFail();
+                    } else{
+                        //购买成功
+                        mthis.setMyInfo();
+                        mthis.closePanel();
+                    }
+                });
+            }, this);
+
+            this.addChild( this.confirm);
+
+        }
+
+        public payFail():void{
+
+            var mthis = this;
+
+            var bgimg: egret.Bitmap = this.createBitmapByName('payFail');
+            bgimg.anchorX = 0.5;
+            bgimg.anchorY = 0.5;
+            bgimg.x = 640/2;
+            bgimg.y = 640/2;
+            bgimg.scaleX = 1;
+            bgimg.scaleY = 1;
+            bgimg.touchEnabled = true;
+            bgimg.addEventListener(egret.TouchEvent.TOUCH_TAP, function(){
+                mthis.closePanel();
+                mthis.removeChild(bgimg);
+            }, this);
+            this.addChild(bgimg);
+        }
+
+        private buyhive():void{
+
+            var mthis = this;
+
+            //关闭hive页面
+            //打开确认页面
+            this.closePanel();
+            this.confirm = new Confirm();
+            this.confirm.addEventListener("close", this.closePanel, this);
+            this.confirm.addEventListener("buy", function(){
+                GameContainer.useApi('api=1019&type=hive',function(json){
+                    console.log(json);
+                    if(json.status === 0){
+                        //购买不成功
+                        mthis.payFail();
+                    } else{
+                        //购买成功
+                        mthis.setMyInfo();
+                        mthis.closePanel();
+                    }
+                });
+            }, this);
+
+            this.addChild( this.confirm);
+
         }
 
         private collectBee(event : egret.TouchEvent):void{
@@ -474,6 +518,22 @@ module beegame{
             container2.addEventListener(egret.TouchEvent.TOUCH_TAP,this.labelTap,this);
 
         }
-    }
 
+        public static useApi(url:string,succ:any):void{
+            var urlreq:egret.URLRequest = new egret.URLRequest( "http://cusflo.com/api/api_c02_n.php" );
+            urlreq.data = new egret.URLVariables(url);
+
+            urlreq.method = egret.URLRequestMethod.GET;
+
+            var urlloader:egret.URLLoader = new egret.URLLoader;
+
+            urlloader.dataFormat = egret.URLLoaderDataFormat.TEXT;
+
+            urlloader.addEventListener( egret.Event.COMPLETE, function( evt:egret.Event ):void{
+                var result = JSON.parse(urlloader.data);
+                succ(result);
+            }, this );
+            urlloader.load( urlreq );
+        }
+    }
 }

@@ -3,9 +3,16 @@ module beegame {
 
     export class HoneybeePanel extends egret.Sprite {
 
+        //第几只蜂蜜
         private beeCount : egret.TextField;
+
+        //攻击力
         private beeAttach : egret.TextField;
+
+        //收集力
         private beeCollect : egret.TextField;
+
+        //费用
         private beeCost : egret.TextField;
 
         public constructor() {
@@ -40,7 +47,7 @@ module beegame {
             this.beeCount= new egret.TextField();
             this.beeCount.width = 40;
             this.beeCount.textColor = 0xffffff;
-            this.beeCount.text = "2";
+            this.beeCount.text = "1";
             this.beeCount.textAlign = egret.HorizontalAlign.CENTER;
             this.beeCount.verticalAlign = egret.VerticalAlign.MIDDLE;
             this.beeCount.size = 24;
@@ -73,7 +80,7 @@ module beegame {
             this.beeCost= new egret.TextField();
             this.beeCost.width = 40;
             this.beeCost.textColor = 0xffffff;
-            this.beeCost.text = "40";
+            this.beeCost.text = "20";
             this.beeCost.textAlign = egret.HorizontalAlign.CENTER;
             this.beeCost.verticalAlign = egret.VerticalAlign.MIDDLE;
             this.beeCost.size = 24;
@@ -103,7 +110,25 @@ module beegame {
             this.addChild(this.beeCost);
             this.addChild(buyBtn);
 
+            this.setWorkerValues();
 
+        }
+
+        public setWorkerValues(){
+            var count;
+            var price;
+
+            var mcount = this.beeCount;
+            var mprice = this.beeCost;
+            GameContainer.useApi('api=1015',function(json){
+                count = json.data[0].bee_lvl;
+                mcount.text = (parseInt(count) + 1) + '';
+            });
+
+            GameContainer.useApi('api=1018', function(json){
+                price = json.data[0].bee_price;
+                mprice.text = price;
+            });
         }
 
         private createBitmapByName(name:string):egret.Bitmap {
@@ -120,7 +145,14 @@ module beegame {
 
         private buy():void{
             this.dispatchEventWith("buy");
+        }
 
+        public setBeeValues(count:string, attach:string, collect:string, cost:string){
+            console.log(count + " " + attach + " "+ collect + " " +cost);
+            this.beeCount.text = count;
+            this.beeAttach.text = attach;
+            this.beeCollect.text = collect;
+            this.beeCost.text = cost;
         }
     }
 }

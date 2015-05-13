@@ -30,7 +30,7 @@ var beegame;
             this.beeCount = new egret.TextField();
             this.beeCount.width = 40;
             this.beeCount.textColor = 0xffffff;
-            this.beeCount.text = "2";
+            this.beeCount.text = "1";
             this.beeCount.textAlign = egret.HorizontalAlign.CENTER;
             this.beeCount.verticalAlign = egret.VerticalAlign.MIDDLE;
             this.beeCount.size = 24;
@@ -60,7 +60,7 @@ var beegame;
             this.beeCost = new egret.TextField();
             this.beeCost.width = 40;
             this.beeCost.textColor = 0xffffff;
-            this.beeCost.text = "40";
+            this.beeCost.text = "20";
             this.beeCost.textAlign = egret.HorizontalAlign.CENTER;
             this.beeCost.verticalAlign = egret.VerticalAlign.MIDDLE;
             this.beeCost.size = 24;
@@ -86,8 +86,23 @@ var beegame;
             this.addChild(this.beeCollect);
             this.addChild(this.beeCost);
             this.addChild(buyBtn);
+            this.setWorkerValues();
         }
         var __egretProto__ = HoneybeePanel.prototype;
+        __egretProto__.setWorkerValues = function () {
+            var count;
+            var price;
+            var mcount = this.beeCount;
+            var mprice = this.beeCost;
+            beegame.GameContainer.useApi('api=1015', function (json) {
+                count = json.data[0].bee_lvl;
+                mcount.text = (parseInt(count) + 1) + '';
+            });
+            beegame.GameContainer.useApi('api=1018', function (json) {
+                price = json.data[0].bee_price;
+                mprice.text = price;
+            });
+        };
         __egretProto__.createBitmapByName = function (name) {
             var result = new egret.Bitmap();
             var texture = RES.getRes(name);
@@ -99,6 +114,13 @@ var beegame;
         };
         __egretProto__.buy = function () {
             this.dispatchEventWith("buy");
+        };
+        __egretProto__.setBeeValues = function (count, attach, collect, cost) {
+            console.log(count + " " + attach + " " + collect + " " + cost);
+            this.beeCount.text = count;
+            this.beeAttach.text = attach;
+            this.beeCollect.text = collect;
+            this.beeCost.text = cost;
         };
         return HoneybeePanel;
     })(egret.Sprite);

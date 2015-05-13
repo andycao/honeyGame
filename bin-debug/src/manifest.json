@@ -1,8 +1,9 @@
 [
-	"beegame\\Bottle.ts",
-	"beegame\\HoneybeePanel.ts",
+	"beegame\\Confirm.ts",
 	"beegame\\Rules.ts",
 	"LoadingUI.ts",
 	"beegame\\GameContainer.ts",
-	"Main.ts"
+	"Main.ts",
+	"beegame\\Bottle.ts",
+	"beegame\\HoneybeePanel.ts"
 ]

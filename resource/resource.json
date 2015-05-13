@@ -24,13 +24,16 @@
       {"name":"closeRed","type":"image","url":"assets/icon_80.png"},
       {"name":"rules","type":"image","url":"assets/icon_85.png"},
       {"name":"flower","type":"image","url":"assets/flower.png"},
-      {"name":"bees","type":"image","url":"assets/icon_69.png"}
-
+      {"name":"bees","type":"image","url":"assets/icon_69.png"},
+      {"name":"confirm","type":"image","url":"assets/confirm.png"},
+      {"name":"yes","type":"image","url":"assets/yes.png"},
+      {"name":"no","type":"image","url":"assets/no.png"},
+      {"name":"payFail","type":"image","url":"assets/payFail.png"}
     ],
 
 "groups":
 	[
-        {"name":"preload","keys":"buyGreen,bees,flower,upgrade,gameBg,collect,map,fight,help,myhoney,plus,mysoldier,mybottle,cloud1,cloud2,honeyimg,honeyclose,buy,bottleimg,rules,closeRed"},
+        {"name":"preload","keys":"payFail,yes,no,confirm,buyGreen,bees,flower,upgrade,gameBg,collect,map,fight,help,myhoney,plus,mysoldier,mybottle,cloud1,cloud2,honeyimg,honeyclose,buy,bottleimg,rules,closeRed"},
         {"name":"game","keys":"gameBg"}
 	]
 }

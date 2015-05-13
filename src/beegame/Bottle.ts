@@ -47,7 +47,7 @@ module beegame {
 
             //容量增加
             this.bottleCapacity= new egret.TextField();
-            this.bottleCapacity.width = 40;
+            this.bottleCapacity.width = 60;
             this.bottleCapacity.textColor = 0xffffff;
             this.bottleCapacity.text = "1";
             this.bottleCapacity.textAlign = egret.HorizontalAlign.CENTER;
@@ -59,13 +59,13 @@ module beegame {
 
             //需要蜂蜜数
             this.beeCost= new egret.TextField();
-            this.beeCost.width = 40;
+            this.beeCost.width = 60;
             this.beeCost.textColor = 0xffffff;
             this.beeCost.text = "10";
             this.beeCost.textAlign = egret.HorizontalAlign.CENTER;
             this.beeCost.verticalAlign = egret.VerticalAlign.MIDDLE;
             this.beeCost.size = 24;
-            this.beeCost.x = 345;
+            this.beeCost.x = 335;
             this.beeCost.y = 640/2 + 90;
 
             //购买按钮
@@ -90,6 +90,26 @@ module beegame {
             this.addChild(this.beeCost);
             this.addChild(buyBtn);
 
+            //初始化
+            this.setBottleValues();
+        }
+
+        public setBottleValues(){
+            var mcount = this.bottleCount
+            var mcap = this.bottleCapacity;
+            var mprice = this.beeCost;
+            GameContainer.useApi('api=1015',function(json){
+                var lvl = json.data[0].hive_lvl;
+                mcount.text = (parseInt(lvl) + 1) + '';
+            });
+
+            GameContainer.useApi('api=1018', function(json){
+                var price = json.data[0].hive_price;
+                var cap = json.data[0].next_hive_capacity;
+
+                mcap.text = cap;
+                mprice.text = price;
+            });
         }
 
         private createBitmapByName(name:string):egret.Bitmap {
