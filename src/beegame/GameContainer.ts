@@ -268,7 +268,6 @@ module beegame{
             container1.addEventListener(egret.TouchEvent.TOUCH_TAP,this.labelTap,this);
             container3.addEventListener(egret.TouchEvent.TOUCH_TAP,this.labelTap,this);
 
-
             //动画效果
             this.startAnimation(cloud1,cloud2);
         }
@@ -403,6 +402,7 @@ module beegame{
 
         }
 
+        //购买失败
         public payFail():void{
 
             var mthis = this;
@@ -422,6 +422,25 @@ module beegame{
             this.addChild(bgimg);
         }
 
+        //采蜜失败
+        public beeFail():void{
+
+            var mthis = this;
+
+            var bgimg: egret.Bitmap = this.createBitmapByName('beeFail');
+            bgimg.anchorX = 0.5;
+            bgimg.anchorY = 0.5;
+            bgimg.x = 640/2;
+            bgimg.y = 640/2;
+            bgimg.scaleX = 1;
+            bgimg.scaleY = 1;
+            bgimg.touchEnabled = true;
+            bgimg.addEventListener(egret.TouchEvent.TOUCH_TAP, function(){
+                mthis.removeChild(bgimg);
+            }, this);
+            this.addChild(bgimg);
+
+        }
         private buyhive():void{
 
             var mthis = this;
@@ -450,15 +469,23 @@ module beegame{
         }
 
         private collectBee(event : egret.TouchEvent):void{
-            console.log('aha');
 
-            this.labelbee.text = (parseInt(this.labelbee.text) + 1).toString();
+            var mthis = this;
             //转动
             var tw = egret.Tween.get(this.flower);
             this.flower.rotation = 0;
             //向日葵的动作
             tw.to({rotation:360}, 1000);
 
+            GameContainer.useApi('api=1016', function(json){
+                if(json.status === 1){
+                    //采蜜成功
+                    mthis.setMyInfo();
+                } else{
+                    //采蜜失败
+                    mthis.beeFail();
+                }
+            });
         }
 
 

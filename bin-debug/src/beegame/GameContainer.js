@@ -263,7 +263,6 @@ var beegame;
                 this.honeyPanel.addEventListener("close", this.closePanel, this);
                 this.honeyPanel.addEventListener("buy", this.buybee, this);
                 if (this.honeyPanel) {
-                    this.honeyPanel.setWorkerValues();
                     this.addChild(this.honeyPanel);
                 }
                 else
@@ -278,7 +277,6 @@ var beegame;
                 this.bottlePanel.addEventListener("close", this.closePanel, this);
                 this.bottlePanel.addEventListener("buy", this.buyhive, this);
                 if (this.bottlePanel) {
-                    this.bottlePanel.setBottleValues();
                     this.addChild(this.bottlePanel);
                 }
                 else
@@ -331,6 +329,7 @@ var beegame;
             }, this);
             this.addChild(this.confirm);
         };
+        //购买失败
         __egretProto__.payFail = function () {
             var mthis = this;
             var bgimg = this.createBitmapByName('payFail');
@@ -343,6 +342,22 @@ var beegame;
             bgimg.touchEnabled = true;
             bgimg.addEventListener(egret.TouchEvent.TOUCH_TAP, function () {
                 mthis.closePanel();
+                mthis.removeChild(bgimg);
+            }, this);
+            this.addChild(bgimg);
+        };
+        //采蜜失败
+        __egretProto__.beeFail = function () {
+            var mthis = this;
+            var bgimg = this.createBitmapByName('beeFail');
+            bgimg.anchorX = 0.5;
+            bgimg.anchorY = 0.5;
+            bgimg.x = 640 / 2;
+            bgimg.y = 640 / 2;
+            bgimg.scaleX = 1;
+            bgimg.scaleY = 1;
+            bgimg.touchEnabled = true;
+            bgimg.addEventListener(egret.TouchEvent.TOUCH_TAP, function () {
                 mthis.removeChild(bgimg);
             }, this);
             this.addChild(bgimg);
@@ -371,13 +386,22 @@ var beegame;
             this.addChild(this.confirm);
         };
         __egretProto__.collectBee = function (event) {
-            console.log('aha');
-            this.labelbee.text = (parseInt(this.labelbee.text) + 1).toString();
+            var mthis = this;
             //转动
             var tw = egret.Tween.get(this.flower);
             this.flower.rotation = 0;
             //向日葵的动作
             tw.to({ rotation: 360 }, 1000);
+            GameContainer.useApi('api=1016', function (json) {
+                if (json.status === 1) {
+                    //采蜜成功
+                    mthis.setMyInfo();
+                }
+                else {
+                    //采蜜失败
+                    mthis.beeFail();
+                }
+            });
         };
         __egretProto__.addSoldier = function () {
             //兵蜂 组合
