@@ -101,10 +101,10 @@ var beegame;
             var map = this.createBitmapByName("map");
             map.anchorX = map.anchorY = 0.5;
             this.addChild(map);
-            map.x = map.width / 2 + 25;
-            map.y = stageH - map.height / 2 - 25;
-            map.scaleX = 0.8;
-            map.scaleY = 0.8;
+            map.x = map.width / 2 + 50;
+            map.y = stageH - map.height / 2 - 40;
+            map.scaleX = 1.1;
+            map.scaleY = 1.1;
             map.addEventListener(egret.TouchEvent.TOUCH_TAP, this.tapMap, this);
             map.touchEnabled = true;
             //战斗按钮
@@ -119,19 +119,30 @@ var beegame;
             var help = this.createBitmapByName("help");
             help.anchorX = help.anchorY = 0.5;
             this.addChild(help);
-            help.x = stageW - help.width / 2 - 80;
-            help.y = help.height / 2 + 100;
-            help.scaleX = 1;
-            help.scaleY = 1;
+            help.x = stageW - help.width / 2 - 60;
+            help.y = help.height / 2 + 110;
+            help.scaleX = 1.1;
+            help.scaleY = 1.1;
             help.touchEnabled = true;
             help.addEventListener(egret.TouchEvent.TOUCH_TAP, this.tapRules, this);
+            //支付按钮
+            var beePay = this.createBitmapByName("beepay");
+            beePay.anchorX = beePay.anchorY = 0.5;
+            beePay.x = stageW - beePay.width / 2 - 60;
+            beePay.y = stageH - beePay.height / 2 - 40;
+            beePay.scaleX = beePay.scaleY = 1;
+            beePay.touchEnabled = true;
+            beePay.addEventListener(egret.TouchEvent.TOUCH_TAP, this.tapPay, this);
+            this.addChild(beePay);
             //工蜂 组合
             var container1 = new egret.DisplayObjectContainer();
             container1.touchChildren = true; //等同于Flash的mouseChildren
             container1.touchEnabled = true; //设置容器是否响应Touch交互
             container1.name = "myhoney";
-            container1.x = 50;
-            container1.y = 0;
+            container1.x = 40;
+            container1.y = 10;
+            container1.scaleX = 1.1;
+            container1.scaleY = 1.1;
             var shape1 = new egret.Shape();
             shape1.graphics.beginFill(0x005757);
             shape1.graphics.drawRect(40, 20, 140, 40);
@@ -176,8 +187,9 @@ var beegame;
             container3.touchChildren = true; //等同于Flash的mouseChildren
             container3.touchEnabled = true; //设置容器是否响应Touch交互
             container3.name = "mybottle";
-            container3.x = 360;
-            container3.y = 0;
+            container3.x = 380;
+            container3.y = 10;
+            container3.scaleX = container3.scaleY = 1.1;
             var shape3 = new egret.Shape();
             shape3.graphics.beginFill(0x005757);
             shape3.graphics.drawRect(40, 20, 140, 40);
@@ -235,15 +247,15 @@ var beegame;
         __egretProto__.startAnimation = function (cloud1, cloud2) {
             var change = function () {
                 var tw = egret.Tween.get(cloud1);
-                tw.to({ x: cloud1.x - 80 }, 20000).to({ x: cloud1.x }, 20000);
+                tw.to({ x: cloud1.x - 40 }, 10000).to({ x: cloud1.x }, 15000);
                 var tw2 = egret.Tween.get(cloud2);
-                tw2.to({ x: cloud2.x - 80 }, 20000).to({ x: cloud2.x }, 20000);
+                tw2.to({ x: cloud2.x - 100 }, 15000).to({ x: cloud2.x }, 10000);
                 tw.call(change, this);
             };
             var tw = egret.Tween.get(this.flower);
             var change2 = function () {
                 //向日葵的动作
-                tw.to({ scaleX: 0.7, scaleY: 0.7 }, 3000).to({ rotation: 360 }, 1000);
+                tw.to({ scaleX: 0.7, scaleY: 0.7 }, 2000);
                 //tw.call(change2, this);
             };
             change();
@@ -286,6 +298,10 @@ var beegame;
         __egretProto__.tapMap = function (event) {
             console.log('touched map');
             location.href = '#map';
+        };
+        __egretProto__.tapPay = function (event) {
+            console.log('touched bee pay');
+            location.href = '#beepay';
         };
         __egretProto__.tapRules = function (event) {
             //rulesPanel
@@ -384,13 +400,13 @@ var beegame;
             }, this);
             this.addChild(this.confirm);
         };
+        //点击蜂蜜收集
         __egretProto__.collectBee = function (event) {
             var mthis = this;
-            //转动
             var tw = egret.Tween.get(this.flower);
-            this.flower.rotation = 0;
             //向日葵的动作
-            tw.to({ rotation: 360 }, 1000);
+            tw.to({ scaleX: 0.3, scaleY: 0.3 }, 1500).to({ scaleX: 0.7, scaleY: 0.7 }, 1000).call(function () {
+            });
             GameContainer.useApi('api=1016', function (json) {
                 if (json.status === 1) {
                     //采蜜成功
