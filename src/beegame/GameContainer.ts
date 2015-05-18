@@ -72,18 +72,25 @@ module beegame{
             var cloud1: egret.Bitmap = this.createBitmapByName("cloud1");
             cloud1.anchorX = cloud1.anchorY = 0.5;
             this.addChild(cloud1);
-            cloud1.x = 60;
+            cloud1.x = 90;
             cloud1.y = 180;
             cloud1.scaleX = 0.9;
             cloud1.scaleY = 0.9;
 
-            var cloud2: egret.Bitmap = this.createBitmapByName("cloud1");
+            var cloud2: egret.Bitmap = this.createBitmapByName("cloud2");
             cloud2.anchorX = cloud2.anchorY = 0.5;
-            this.addChild(cloud2);
-            cloud2.x = 440;
-            cloud2.y = 168;
-            cloud2.scaleX = 0.9;
-            cloud2.scaleY = 0.9;
+            cloud2.x = 550;
+            cloud2.y = 230;
+            cloud2.scaleX = 1;
+            cloud2.scaleY = 1;
+
+            var cloud3: egret.Bitmap = this.createBitmapByName("cloud3");
+            cloud3.anchorX = cloud3.anchorY = 0.5;
+            this.addChild(cloud3);
+            cloud3.x = 350;
+            cloud3.y = 115;
+            cloud3.scaleX = 0.9;
+            cloud3.scaleY = 0.9;
 
             //向日葵
             var containerF = new egret.DisplayObjectContainer();
@@ -131,6 +138,9 @@ module beegame{
             containerF.addChild(this.labelbee);
 
             this.addChild(containerF);
+
+            //加载近处的云彩
+            this.addChild(cloud2);
 
             //地图图标
             var map: egret.Bitmap = this.createBitmapByName("map");
@@ -282,7 +292,7 @@ module beegame{
             container3.addEventListener(egret.TouchEvent.TOUCH_TAP,this.labelTap,this);
 
             //动画效果
-            this.startAnimation(cloud1,cloud2);
+            this.startAnimation(cloud1,cloud2, cloud3);
         }
 
         private createBitmapByName(name: string): egret.Bitmap {
@@ -296,27 +306,44 @@ module beegame{
          * 描述文件加载成功，开始播放动画
          * Description file loading is successful, start to play the animation
          */
-        private startAnimation(cloud1,cloud2): void {
-            var change = function() {
-                var tw = egret.Tween.get(cloud1);
-                tw.to({x: cloud1.x - 40}, 10000).to({ x: cloud1.x}, 15000);
-
-                var tw2 = egret.Tween.get(cloud2);
-                tw2.to({x: cloud2.x - 100}, 15000).to({ x: cloud2.x}, 10000);
-
-                tw.call(change, this);
-
-            };
-
+        private startAnimation(cloud1,cloud2, cloud3): void {
+            //向日葵的动作
             var tw = egret.Tween.get(this.flower);
-            var change2 = function(){
+
+            var change = function(){
 
                 //向日葵的动作
                 tw.to({scaleX : 0.7, scaleY : 0.7}, 2000);
-                //tw.call(change2, this);
+                //tw.call(change, this);
             };
+
+            //cloud1的动作
+            var change2 = function() {
+                var tw2 = egret.Tween.get(cloud1);
+                tw2.to({x: -10}, 15000).set({x : 700});
+
+                tw2.call(change2, this);
+            };
+
+            //cloud2
+            var change3 = function(){
+                var tw3 = egret.Tween.get(cloud2);
+                tw3.to({x : -20}, 10000).set({x : 700});
+                tw3.call(change3, this);
+            };
+
+            //cloud3
+            var change4 = function(){
+                var tw4 = egret.Tween.get(cloud3);
+                tw4.to({x : -10}, 20000).set({x:700});
+
+                tw4.call(change4, this);
+            };
+
             change();
             change2();
+            change3();
+            change4();
         }
 
         /*点击标签*/

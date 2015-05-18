@@ -26,17 +26,17 @@ module beegame {
             rulesImg.anchorY = 0.5;
             rulesImg.x = 640/2;
             rulesImg.y = 640/2 + 10;
-            rulesImg.scaleX = 0.7;
-            rulesImg.scaleY = 0.7;
+            rulesImg.scaleX = 1.1;
+            rulesImg.scaleY = 1.1;
             rulesContaienr.addChild(rulesImg);
 
             var redClose:egret.Bitmap = this.createBitmapByName('closeRed');
             redClose.anchorX = 0.5;
             redClose.anchorY = 0.5;
-            redClose.x = 460;
-            redClose.y = 130;
-            redClose.scaleX = 1;
-            redClose.scaleY = 1;
+            redClose.x = 520;
+            redClose.y = 110;
+            redClose.scaleX = 1.1;
+            redClose.scaleY = 1.1;
             redClose.touchEnabled = true;
             rulesContaienr.addChild(redClose);
 
