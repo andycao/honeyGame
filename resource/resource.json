@@ -31,13 +31,14 @@
       {"name":"no","type":"image","url":"assets/no.png"},
       {"name":"payFail","type":"image","url":"assets/payFail.png"},
       {"name":"beeFail","type":"image","url":"assets/beeFail.png"},
-      {"name":"beepay","type":"image","url":"assets/icon_pay.png"}
+      {"name":"beepay","type":"image","url":"assets/icon_pay.png"},
+      {"name":"beeSucc","type":"image","url":"assets/beeSucc.png"}
 
     ],
 
 "groups":
 	[
-        {"name":"preload","keys":"beepay,beeFail,payFail,yes,no,confirm,buyGreen,bees,flower,upgrade,gameBg,collect,map,fight,help,myhoney,plus,mysoldier,mybottle,cloud1,cloud2,cloud3,honeyimg,honeyclose,buy,bottleimg,rules,closeRed"},
+        {"name":"preload","keys":"beepay,beeSucc,beeFail,payFail,yes,no,confirm,buyGreen,bees,flower,upgrade,gameBg,collect,map,fight,help,myhoney,plus,mysoldier,mybottle,cloud1,cloud2,cloud3,honeyimg,honeyclose,buy,bottleimg,rules,closeRed"},
         {"name":"game","keys":"gameBg"}
 	]
 }

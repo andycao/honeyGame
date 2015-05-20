@@ -62,6 +62,7 @@ var beegame;
             cloud3.y = 115;
             cloud3.scaleX = 0.9;
             cloud3.scaleY = 0.9;
+            this.addChild(cloud2);
             //向日葵
             var containerF = new egret.DisplayObjectContainer();
             containerF.name = "myhoney";
@@ -103,16 +104,14 @@ var beegame;
             this.labelbee.size = 20;
             containerF.addChild(this.labelbee);
             this.addChild(containerF);
-            //加载近处的云彩
-            this.addChild(cloud2);
             //地图图标
             var map = this.createBitmapByName("map");
             map.anchorX = map.anchorY = 0.5;
             this.addChild(map);
             map.x = map.width / 2 + 50;
             map.y = stageH - map.height / 2 - 40;
-            map.scaleX = 1.1;
-            map.scaleY = 1.1;
+            map.scaleX = 1;
+            map.scaleY = 1;
             map.addEventListener(egret.TouchEvent.TOUCH_TAP, this.tapMap, this);
             map.touchEnabled = true;
             //战斗按钮
@@ -137,7 +136,7 @@ var beegame;
             var beePay = this.createBitmapByName("beepay");
             beePay.anchorX = beePay.anchorY = 0.5;
             beePay.x = stageW - beePay.width / 2 - 60;
-            beePay.y = stageH - beePay.height / 2 - 40;
+            beePay.y = stageH - beePay.height / 2 - 39;
             beePay.scaleX = beePay.scaleY = 1;
             beePay.touchEnabled = true;
             beePay.addEventListener(egret.TouchEvent.TOUCH_TAP, this.tapPay, this);
@@ -263,19 +262,19 @@ var beegame;
             //cloud1的动作
             var change2 = function () {
                 var tw2 = egret.Tween.get(cloud1);
-                tw2.to({ x: -10 }, 15000).set({ x: 700 });
+                tw2.to({ x: -10 }, 18000).set({ x: 700 });
                 tw2.call(change2, this);
             };
             //cloud2
             var change3 = function () {
                 var tw3 = egret.Tween.get(cloud2);
-                tw3.to({ x: -20 }, 10000).set({ x: 700 });
+                tw3.to({ x: -20 }, 24000).set({ x: 700 });
                 tw3.call(change3, this);
             };
             //cloud3
             var change4 = function () {
                 var tw4 = egret.Tween.get(cloud3);
-                tw4.to({ x: -10 }, 20000).set({ x: 700 });
+                tw4.to({ x: -10 }, 30000).set({ x: 700 });
                 tw4.call(change4, this);
             };
             change();
@@ -318,11 +317,9 @@ var beegame;
             }
         };
         __egretProto__.tapMap = function (event) {
-            console.log('touched map');
             location.href = '#map';
         };
         __egretProto__.tapPay = function (event) {
-            console.log('touched bee pay');
             location.href = '#beepay';
         };
         __egretProto__.tapRules = function (event) {
@@ -352,7 +349,6 @@ var beegame;
             this.confirm.addEventListener("close", this.closePanel, this);
             this.confirm.addEventListener("buy", function () {
                 GameContainer.useApi('api=1019&type=bee', function (json) {
-                    console.log(json);
                     if (json.status === 0) {
                         //购买不成功
                         mthis.payFail();
@@ -399,6 +395,22 @@ var beegame;
             }, this);
             this.addChild(bgimg);
         };
+        //采蜜成功
+        __egretProto__.beeSucc = function () {
+            var mthis = this;
+            var bgimg = this.createBitmapByName('beeSucc');
+            bgimg.anchorX = 0.5;
+            bgimg.anchorY = 0.5;
+            bgimg.x = 640 / 2;
+            bgimg.y = 640 / 2;
+            bgimg.scaleX = 1;
+            bgimg.scaleY = 1;
+            bgimg.touchEnabled = true;
+            bgimg.addEventListener(egret.TouchEvent.TOUCH_TAP, function () {
+                mthis.removeChild(bgimg);
+            }, this);
+            this.addChild(bgimg);
+        };
         __egretProto__.buyhive = function () {
             var mthis = this;
             //关闭hive页面
@@ -408,7 +420,6 @@ var beegame;
             this.confirm.addEventListener("close", this.closePanel, this);
             this.confirm.addEventListener("buy", function () {
                 GameContainer.useApi('api=1019&type=hive', function (json) {
-                    console.log(json);
                     if (json.status === 0) {
                         //购买不成功
                         mthis.payFail();
@@ -429,10 +440,13 @@ var beegame;
             //向日葵的动作
             tw.to({ scaleX: 0.3, scaleY: 0.3 }, 1500).to({ scaleX: 0.7, scaleY: 0.7 }, 1000).call(function () {
             });
+            //检测用户是否在wibeacon网络下
+            //GameContainer.testNetwork('a','b');
             GameContainer.useApi('api=1016', function (json) {
                 if (json.status === 1) {
                     //采蜜成功
                     mthis.setMyInfo();
+                    mthis.beeSucc();
                 }
                 else {
                     //采蜜失败
@@ -497,6 +511,16 @@ var beegame;
             urlloader.addEventListener(egret.Event.COMPLETE, function (evt) {
                 var result = JSON.parse(urlloader.data);
                 succ(result);
+            }, this);
+            urlloader.load(urlreq);
+        };
+        GameContainer.testNetwork = function (inbeacon, outbeacon) {
+            var urlreq = new egret.URLRequest("http://wi-beacon.net:81");
+            urlreq.method = egret.URLRequestMethod.GET;
+            var urlloader = new egret.URLLoader;
+            urlloader.dataFormat = egret.URLLoaderDataFormat.TEXT;
+            urlloader.addEventListener(egret.Event.COMPLETE, function (evt) {
+                console.dir(urlloader.data);
             }, this);
             urlloader.load(urlreq);
         };
