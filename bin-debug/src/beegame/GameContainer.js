@@ -380,7 +380,11 @@ var beegame;
             this.addChild(bgimg);
         };
         //采蜜失败
-        __egretProto__.beeFail = function () {
+        __egretProto__.beeFail = function (message) {
+            var container1 = new egret.DisplayObjectContainer();
+            container1.touchChildren = true; //等同于Flash的mouseChildren
+            container1.touchEnabled = true; //设置容器是否响应Touch交互
+            container1.scaleX = container1.scaleY = 1;
             var mthis = this;
             var bgimg = this.createBitmapByName('beeFail');
             bgimg.anchorX = 0.5;
@@ -390,10 +394,26 @@ var beegame;
             bgimg.scaleX = 1;
             bgimg.scaleY = 1;
             bgimg.touchEnabled = true;
-            bgimg.addEventListener(egret.TouchEvent.TOUCH_TAP, function () {
-                mthis.removeChild(bgimg);
+            container1.addChild(bgimg);
+            var faillab = new egret.TextField();
+            faillab.x = 350;
+            faillab.y = 225;
+            faillab.width = 200;
+            faillab.height = 80;
+            faillab.textAlign = egret.HorizontalAlign.CENTER;
+            faillab.verticalAlign = egret.VerticalAlign.MIDDLE;
+            faillab.textColor = 0xffe64f;
+            faillab.text = message;
+            faillab.size = 24;
+            faillab.lineSpacing = 2;
+            faillab.fontFamily = 'Microsoft Yahei';
+            faillab.bold = true;
+            faillab.touchEnabled = true;
+            container1.addChild(faillab);
+            container1.addEventListener(egret.TouchEvent.TOUCH_TAP, function () {
+                mthis.removeChild(container1);
             }, this);
-            this.addChild(bgimg);
+            this.addChild(container1);
         };
         //采蜜成功
         __egretProto__.beeSucc = function () {
@@ -440,8 +460,14 @@ var beegame;
             //向日葵的动作
             tw.to({ scaleX: 0.3, scaleY: 0.3 }, 1500).to({ scaleX: 0.7, scaleY: 0.7 }, 1000).call(function () {
             });
-            //检测用户是否在wibeacon网络下
-            //GameContainer.testNetwork('a','b');
+            //检查用户的昵称
+            GameContainer.useApi('api=1015', function (json) {
+                var nick = json.data[0].nick;
+                if (!nick) {
+                    location.href = "#mynick";
+                    return;
+                }
+            });
             GameContainer.useApi('api=1016', function (json) {
                 if (json.status === 1) {
                     //采蜜成功
@@ -450,7 +476,7 @@ var beegame;
                 }
                 else {
                     //采蜜失败
-                    mthis.beeFail();
+                    mthis.beeFail(json.data);
                 }
             });
         };

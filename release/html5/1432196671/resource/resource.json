@@ -1,0 +1,44 @@
+{
+"resources":
+	[
+	  {"name":"bgImage","type":"image","url":"assets/bg.jpg"},
+	  {"name":"egretIcon","type":"image","url":"assets/egret_icon.png"},
+      {"name":"description","type":"json","url":"config/description.json"},
+      {"name":"gameBg","type":"image","url":"assets/game_bg.png"},
+      {"name":"collect","type":"image","url":"assets/icon_60.png"},
+      {"name":"map","type":"image","url":"assets/icon_67.png"},
+      {"name":"fight","type":"image","url":"assets/icon_61.png"},
+      {"name":"help","type":"image","url":"assets/icon_68.png"},
+      {"name":"myhoney","type":"image","url":"assets/icon_65.png"},
+      {"name":"plus","type":"image","url":"assets/icon_102.png"},
+      {"name":"upgrade","type":"image","url":"assets/icon_103.png"},
+      {"name":"mysoldier","type":"image","url":"assets/icon_66.png"},
+      {"name":"mybottle","type":"image","url":"assets/icon_62.png"},
+      {"name":"cloud1","type":"image","url":"assets/icon_97.png"},
+      {"name":"cloud2","type":"image","url":"assets/icon_100.png"},
+      {"name":"cloud3","type":"image","url":"assets/icon_99.png"},
+      {"name":"honeyimg","type":"image","url":"assets/icon_76.png"},
+      {"name":"honeyclose","type":"image","url":"assets/icon_77.png"},
+      {"name":"buy","type":"image","url":"assets/icon_78.png"},
+      {"name":"buyGreen","type":"image","url":"assets/icon_83.png"},
+      {"name":"bottleimg","type":"image","url":"assets/icon_82.png"},
+      {"name":"closeRed","type":"image","url":"assets/icon_80.png"},
+      {"name":"rules","type":"image","url":"assets/icon_85.png"},
+      {"name":"flower","type":"image","url":"assets/flower.png"},
+      {"name":"bees","type":"image","url":"assets/icon_69.png"},
+      {"name":"confirm","type":"image","url":"assets/confirm.png"},
+      {"name":"yes","type":"image","url":"assets/yes.png"},
+      {"name":"no","type":"image","url":"assets/no.png"},
+      {"name":"payFail","type":"image","url":"assets/payFail.png"},
+      {"name":"beeFail","type":"image","url":"assets/beeFail.png"},
+      {"name":"beepay","type":"image","url":"assets/icon_pay.png"},
+      {"name":"beeSucc","type":"image","url":"assets/beeSucc.png"}
+
+    ],
+
+"groups":
+	[
+        {"name":"preload","keys":"beepay,beeSucc,beeFail,payFail,yes,no,confirm,buyGreen,bees,flower,upgrade,gameBg,collect,map,fight,help,myhoney,plus,mysoldier,mybottle,cloud1,cloud2,cloud3,honeyimg,honeyclose,buy,bottleimg,rules,closeRed"},
+        {"name":"game","keys":"gameBg"}
+	]
+}
