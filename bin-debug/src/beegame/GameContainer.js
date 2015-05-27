@@ -396,16 +396,16 @@ var beegame;
             bgimg.touchEnabled = true;
             container1.addChild(bgimg);
             var faillab = new egret.TextField();
-            faillab.x = 350;
-            faillab.y = 225;
-            faillab.width = 200;
-            faillab.height = 80;
-            faillab.textAlign = egret.HorizontalAlign.CENTER;
+            faillab.x = 360;
+            faillab.y = 200;
+            faillab.width = 210;
+            faillab.height = 120;
+            faillab.textAlign = egret.HorizontalAlign.LEFT;
             faillab.verticalAlign = egret.VerticalAlign.MIDDLE;
             faillab.textColor = 0xffe64f;
             faillab.text = message;
-            faillab.size = 24;
-            faillab.lineSpacing = 2;
+            faillab.size = 18;
+            faillab.lineSpacing = 5;
             faillab.fontFamily = 'Microsoft Yahei';
             faillab.bold = true;
             faillab.touchEnabled = true;
@@ -460,12 +460,12 @@ var beegame;
             //向日葵的动作
             tw.to({ scaleX: 0.3, scaleY: 0.3 }, 1500).to({ scaleX: 0.7, scaleY: 0.7 }, 1000).call(function () {
             });
+            //mthis.beeFail('不要太贪心哦，总采同一朵花是不行滴，去别的花试试手气（可以借助采蜜地图）！');
             //检查用户的昵称
             GameContainer.useApi('api=1015', function (json) {
                 var nick = json.data[0].nick;
                 if (!nick) {
                     location.href = "#mynick";
-                    return;
                 }
             });
             GameContainer.useApi('api=1016', function (json) {
@@ -536,7 +536,8 @@ var beegame;
             urlloader.dataFormat = egret.URLLoaderDataFormat.TEXT;
             urlloader.addEventListener(egret.Event.COMPLETE, function (evt) {
                 var result = JSON.parse(urlloader.data);
-                succ(result);
+                if (succ)
+                    succ(result);
             }, this);
             urlloader.load(urlreq);
         };

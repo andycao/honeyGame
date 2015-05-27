@@ -436,9 +436,7 @@ module beegame{
                     }
                 });
             }, this);
-
             this.addChild( this.confirm);
-
         }
 
         //购买失败
@@ -481,22 +479,24 @@ module beegame{
             container1.addChild(bgimg);
 
             var faillab = new egret.TextField();
-            faillab.x = 350;
-            faillab.y = 225;
-            faillab.width = 200;
-            faillab.height = 80;
-            faillab.textAlign = egret.HorizontalAlign.CENTER;
+            faillab.x = 360;
+            faillab.y = 200;
+            faillab.width = 210;
+            faillab.height = 120;
+            faillab.textAlign = egret.HorizontalAlign.LEFT;
             faillab.verticalAlign = egret.VerticalAlign.MIDDLE;
             faillab.textColor = 0xffe64f;
             faillab.text = message;
-            faillab.size = 24;
-            faillab.lineSpacing = 4;
+            faillab.size = 18;
+            faillab.lineSpacing = 5;
             faillab.fontFamily = 'Microsoft Yahei';
+
             faillab.bold = true;
             faillab.touchEnabled = true;
             container1.addChild(faillab);
 
             container1.addEventListener(egret.TouchEvent.TOUCH_TAP, function(){
+
                 mthis.removeChild(container1);
             }, this);
 
@@ -560,15 +560,19 @@ module beegame{
             tw.to({scaleX : 0.3, scaleY : 0.3}, 1500).to({scaleX : 0.7, scaleY : 0.7}, 1000).call(function(){
 
             });
+
+            //mthis.beeFail('不要太贪心哦，总采同一朵花是不行滴，去别的花试试手气（可以借助采蜜地图）！');
+
             //检查用户的昵称
             GameContainer.useApi('api=1015', function(json){
                 var nick = json.data[0].nick;
+
                 if(!nick){
                     location.href="#mynick";
-                    return ;
                 }
             });
 
+            //采蜜接口
             GameContainer.useApi('api=1016', function(json){
                 if(json.status === 1){
                     //采蜜成功
@@ -653,7 +657,8 @@ module beegame{
 
             urlloader.addEventListener( egret.Event.COMPLETE, function( evt:egret.Event ):void{
                 var result = JSON.parse(urlloader.data);
-                succ(result);
+                if(succ)
+                    succ(result);
             }, this );
             urlloader.load( urlreq );
         }
