@@ -464,19 +464,30 @@ var beegame;
             //检查用户的昵称
             GameContainer.useApi('api=1015', function (json) {
                 var nick = json.data[0].nick;
-                if (!nick) {
+                //累计采集蜂蜜数
+                var totalhoney = json.data[0].totalhoney;
+                var mobile = json.data[0].mobile;
+                //检测nick
+                if (totalhoney >= 100 && !nick) {
                     location.href = "#mynick";
                 }
-            });
-            GameContainer.useApi('api=1016', function (json) {
-                if (json.status === 1) {
-                    //采蜜成功
-                    mthis.setMyInfo();
-                    mthis.beeSucc();
+                //检测mobile
+                if (totalhoney >= 100 && !mobile) {
+                    location.href = "#mobCheck";
                 }
                 else {
-                    //采蜜失败
-                    mthis.beeFail(json.data);
+                    //采蜜接口
+                    GameContainer.useApi('api=1016', function (json) {
+                        if (json.status === 1) {
+                            //采蜜成功
+                            mthis.setMyInfo();
+                            mthis.beeSucc();
+                        }
+                        else {
+                            //采蜜失败
+                            mthis.beeFail(json.data);
+                        }
+                    });
                 }
             });
         };
