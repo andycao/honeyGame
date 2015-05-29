@@ -28,54 +28,56 @@ module beegame {
             var bottleClose:egret.Bitmap = this.createBitmapByName('honeyclose');
             bottleClose.anchorX = 0.5;
             bottleClose.anchorY = 0.5;
-            bottleClose.x = 480;
-            bottleClose.y = 130;
-            bottleClose.scaleX = 1;
-            bottleClose.scaleY = 1;
+            bottleClose.x = 495;
+            bottleClose.y = 110;
+            bottleClose.scaleX = 1.1;
+            bottleClose.scaleY = 1.1;
             bottleClose.touchEnabled = true;
 
             //蜜罐等级
             this.bottleCount= new egret.TextField();
             this.bottleCount.width = 40;
-            this.bottleCount.textColor = 0xffffff;
+            this.bottleCount.textColor = 0x000000;
             this.bottleCount.text = "2";
             this.bottleCount.textAlign = egret.HorizontalAlign.CENTER;
             this.bottleCount.verticalAlign = egret.VerticalAlign.MIDDLE;
-            this.bottleCount.size = 24;
-            this.bottleCount.x = 310;
-            this.bottleCount.y = 640/2 + 10;
+            this.bottleCount.size = 28;
+            this.bottleCount.bold = true;
+            this.bottleCount.x = 320;
+            this.bottleCount.y = 640/2 - 60;
 
             //容量增加
             this.bottleCapacity= new egret.TextField();
-            this.bottleCapacity.width = 60;
-            this.bottleCapacity.textColor = 0xffffff;
-            this.bottleCapacity.text = "1";
-            this.bottleCapacity.textAlign = egret.HorizontalAlign.CENTER;
+            this.bottleCapacity.width = 120;
+            this.bottleCapacity.textColor = 0x000000;
+            this.bottleCapacity.text = "+10";
+            this.bottleCapacity.textAlign = egret.HorizontalAlign.LEFT;
             this.bottleCapacity.verticalAlign = egret.VerticalAlign.MIDDLE;
-            this.bottleCapacity.size = 24;
-            this.bottleCapacity.x = 330;
-            this.bottleCapacity.y = 640/2 + 45;
-
+            this.bottleCapacity.size = 26;
+            this.bottleCapacity.bold = true;
+            this.bottleCapacity.x = 240;
+            this.bottleCapacity.y = 640/2 + 78;
 
             //需要蜂蜜数
             this.beeCost= new egret.TextField();
-            this.beeCost.width = 60;
-            this.beeCost.textColor = 0xffffff;
-            this.beeCost.text = "10";
-            this.beeCost.textAlign = egret.HorizontalAlign.CENTER;
+            this.beeCost.width = 120;
+            this.beeCost.textColor = 0x000000;
+            this.beeCost.text = "-20";
+            this.beeCost.bold = true;
+            this.beeCost.textAlign = egret.HorizontalAlign.LEFT;
             this.beeCost.verticalAlign = egret.VerticalAlign.MIDDLE;
-            this.beeCost.size = 24;
-            this.beeCost.x = 335;
-            this.beeCost.y = 640/2 + 90;
+            this.beeCost.size = 26;
+            this.beeCost.x = 397;
+            this.beeCost.y = 640/2 + 78;
 
             //购买按钮
             var buyBtn: egret.Bitmap = this.createBitmapByName('buyGreen');
             buyBtn.anchorX = 0.5;
             buyBtn.anchorY = 0.5;
             buyBtn.x = 640/2;
-            buyBtn.y = 640/2 + 150;
-            buyBtn.scaleX = 0.9;
-            buyBtn.scaleY = 0.9;
+            buyBtn.y = 640/2 + 170;
+            buyBtn.scaleX = 0.8;
+            buyBtn.scaleY = 0.8;
             buyBtn.touchEnabled = true;
 
             //动作
@@ -104,8 +106,8 @@ module beegame {
             });
 
             GameContainer.useApi('api=1018', function(json){
-                var price = json.data[0].hive_price;
-                var cap = json.data[0].next_hive_capacity;
+                var price = "-" + json.data[0].hive_price;
+                var cap = "+" + json.data[0].next_hive_capacity;
 
                 mcap.text = cap;
                 mprice.text = price;
